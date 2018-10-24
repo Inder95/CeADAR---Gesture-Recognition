@@ -1,2 +1,2 @@
-# CeADAR---Gesture-Recognition
+# CeADAR-Gesture-Recognition
 Hand gesture recognition using deep learning
