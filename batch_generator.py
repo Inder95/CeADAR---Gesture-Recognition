@@ -26,7 +26,7 @@ def batch_gen():
         
 
 
-# generates an array of gesture samples
+# generates an array of gesture samples from the training set
 
 def sample_gen(sample_no):
     result = np.zeros((sample_no,40,image_shape[0],image_shape[1],1))
@@ -34,5 +34,19 @@ def sample_gen(sample_no):
         result[i] = gp.gest3D(train.iloc[i,0]).reshape(40,image_shape[0],image_shape[1],1)
     return result
 
+# returns a tuple of test targets and gesture samples
+
+def test_gen():
+    test = pd.read_csv('test-swipes.csv')
+    test['label_no'] = test['gesture'].apply(gp.label2num)
+    gestures = np.zeros((2008,40,32,32,1))
+    targets = np.zeros((2008,4))
+    from keras.utils import to_categorical
+    targets = to_categorical(test['label_no'].values,4)
+
+    for i in range(2008):
+        gestures[i] = gp.gest3D(test.iloc[i,1]).reshape(40,32,32,1)
+
+    return gestures, targets
 
 
