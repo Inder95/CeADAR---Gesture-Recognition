@@ -9,6 +9,11 @@ import numpy as np
 import os
 
 
+
+
+image_shape = (32,32)
+
+
 def image(folder,file):
     # First put the correct number of zeros in the image string
     fileStr = str(file)
@@ -26,7 +31,7 @@ def grayScale(im):
 
 def imProcess(im):    
     gray = grayScale(im)
-    return cv2.resize(gray,(176,100))
+    return cv2.resize(gray,image_shape)/255
 
 def readAndProcess(gesture_No,image_No):
     return imProcess(image(gesture_No,image_No))
@@ -41,7 +46,7 @@ def readMiddleImage(gesture_no):
 # Read in 40 images of a gesture in the form of a 3d array
 
 def gest3D(gesture_No):
-    imagesArray = np.zeros((40,100,176))
+    imagesArray = np.zeros((40,) + image_shape)
     location = 'swipe-videos//' + str(gesture_No)
     
     # the number of images in the folder
@@ -71,5 +76,17 @@ def label2vec(label):
         result[3] =1
         
     return result
+
+def label2num(label):
+    direc = label[8:]
+    if direc == 'Right':
+        return 0
+    elif direc == 'Left':
+        return 1
+    elif direc == 'Up':
+        return 2
+    elif direc == 'Down':
+        return 3
+
 
 
